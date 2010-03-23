@@ -1,0 +1,33 @@
+#summary How to provision tokens via the web
+
+== Overview ==
+
+The OATH Token iPhone app automatically configures the iPhone to direct *oathtoken://* URLs to the OATH Token application. When the OATH Token app receives such an URL, it will prompt the user for a confirmation and then add the token to that user's token list.
+
+This provides a simple mechanism for web-based provisioning of tokens. However, it is critical that the hyperlink be delivered *securely* to the user (e.g., via an encrypted and password-protected web page) so that the token's secret key is not revealed.
+
+== URL Format ==
+
+This URL has a simple format: *oathtoken:///addToken?*_name1_*=*_value1_*&*_name2_*=*_value2_*&*...
+
+The token to be added is configured using URL parameters as follows:
+
+|| *URL parameter* || *Required?* || *Default* || *Description* ||
+|| name || Yes || N/A || Token display name (must not be empty) ||
+|| key || Yes || N/A || Hexadecimal key (at least eight bytes long) ||
+|| timeBased || No || false || Whether to create an event-based (*false*) or time-based (*true*) token ||
+|| counter || No || 0 || Initial counter value (event-based tokens only) ||
+|| interval || No || 30 || Timer interval length in seconds (time-based tokens only) ||
+|| displayHex || No || false || Whether to display token values in hexadecimal instead of decimal ||
+|| numDigits || No || 6 || Number of digits to display (at least 4 and at most 10 (decimal) or 8 (hex)) ||
+|| lockdown || No || false || Whether to allow (*false*) or permanently disable (*true*) editing of the new token || 
+
+== Examples ==
+
+*oathtoken:///addToken?name=Web%20Token%20%231&key=0123456789abcdef555555*
+
+Create a new event-based token named `Web Token #1' with key {{{0123456789abcdef555555}}}, initial counter value of zero, displaying six decimal digits. The user will be allowed to edit the token.
+
+*oathtoken:///addToken?name=Web%20Token%20%232&key=acbd18db4cc2f85cedef654fccc4a4d8&timeBased=true&interval=60&numDigits=10&lockdown=true
+
+Create a new time-based token named `Web Token #2' with key {{{acbd18db4cc2f85cedef654fccc4a4d8}}}, displaying 10 decimal digits based on a 60 second interval. The user will not be allowed to edit the token.
