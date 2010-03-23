@@ -2,7 +2,7 @@
 
 == Overview ==
 
-The OATH Token iPhone app automatically configures the iPhone to direct *oathtoken://* URLs to the OATH Token application. When the OATH Token app receives such an URL, it will prompt the user for a confirmation and then add the token to that user's token list.
+The OATH Token iPhone app automatically configures the iPhone to direct *oathtoken://* URLs to the OATH Token application. When the OATH Token app receives such an URL, for example because the user clicked on a hyperlink in a web page or email, it will prompt the user for a confirmation and then add the token to that user's token list.
 
 This provides a simple mechanism for web-based provisioning of tokens. However, it is critical that the hyperlink be delivered *securely* to the user (e.g., via an encrypted and password-protected web page) so that the token's secret key is not revealed.
 
