@@ -26,7 +26,7 @@ The token to be added is configured using URL parameters as follows:
 
 *oathtoken:///addToken?name=Web%20Token%20%231&key=0123456789abcdef555555*
 
-Create a new event-based token named `Web Token #1' with key {{{0123456789abcdef555555}}}, initial counter value of zero, displaying six decimal digits. The user will be allowed to edit the token. If you have the OATH Token app installed, you can try this example [oathtoken:///addToken?name=Web%20Token%20%231&key=0123456789abcdef555555 with this link].
+Create a new event-based token named `Web Token #1' with key {{{0123456789abcdef555555}}}, initial counter value of zero, displaying six decimal digits. The user will be allowed to edit the token. If you have the OATH Token app installed, you can try this example <a href="oathtoken:///addToken?name=Web%20Token%20%231&key=0123456789abcdef555555">with this link</a>.
 
 *oathtoken:///addToken?name=Web%20Token%20%232&key=acbd18db4cc2f85cedef654fccc4a4d8&timeBased=true&interval=60&numDigits=10&lockdown=true*
 
