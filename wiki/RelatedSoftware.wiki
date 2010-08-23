@@ -1,0 +1,6 @@
+#summary Links to related software
+
+===Related Software===
+
+  * [http://code.google.com/p/mod-authn-otp/ mod-authn-otp] - Apache authentication module for OATH authentication
+  * [http://www.multiotp.net/ MultiOTP] - LGPL implementation of the OATH server-side; can be used with e.g. FreeRADIUS for OATH authentication on Windows or Linux.
