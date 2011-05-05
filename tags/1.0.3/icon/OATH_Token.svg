@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- $Id$ -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 400" width="400" height="400" overflow="visible" preserveAspectRatio="none">
+
+    <defs>
+
+        <linearGradient id="backgroundGradient" gradientUnits="userSpaceOnUse" x1="200" y1="-100" x2="200" y2="500">
+            <stop offset="0%" style="stop-color:#bbccdd" />
+            <stop offset="50%" style="stop-color:#7788aa" />
+            <stop offset="100%" style="stop-color:#171b22" />            
+        </linearGradient>
+
+        <filter id="shadow">
+
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+            <feOffset dx="0" dy="15" />
+            <feComponentTransfer result="shadow">
+                <feFuncA type="linear" slope=".57" />
+            </feComponentTransfer>
+
+            <feFlood flood-color="white"/>
+            <feComposite operator="in" in2="SourceAlpha"/>
+            <feOffset dx="0" dy="-1" result="whiteTrim"/>
+
+            <feFlood flood-color="#4f4411" flood-opacity="1"/>
+            <feComposite operator="in" in2="SourceAlpha"/>
+            <feOffset dx="1" dy="3" result="blackTrim"/>
+
+            <feMerge>
+                <feMergeNode in="shadow" />
+                <!-- <feMergeNode in="whiteTrim"/> -->
+                <feMergeNode in="blackTrim"/>
+            </feMerge>
+
+            <feComposite operator="out" in2="SourceAlpha"/>
+        </filter>
+
+        <g id="key" transform="translate(55,250) rotate(-30) scale(1.2, 1.0)">
+            <g transform="translate(-30, -200)">
+                <path fill-rule="evenodd" fill="#eecc33" d="M120,160 A60,90 0 1 0 120,240 L140,240 L160,220 L180,240 L200,220 L220,240
+                    L240,220 L260,240 L280,220 L300,240 L320,220 L340,200 L320,170 L140,170 z
+                    M30,200.01 A18,22 0 1 0 30,200
+                    z"/>
+                <path stroke="#776619" stroke-width="9" stroke-linecap="round" d="M138,193 L318,193"/>
+            </g>
+        </g>
+
+    </defs>
+
+    <!-- <rect fill="#7788aa" x="-2" y="-2" width="404" height="404"/> -->
+    <rect fill="url(#backgroundGradient)" x="-2" y="-2" width="404" height="404"/>
+
+    <use filter="url(#shadow)" xlink:href="#key"/>
+    <use xlink:href="#key"/>
+
+</svg>
