@@ -6,28 +6,40 @@ The OATH Token iPhone app automatically configures the iPhone to direct *oathtok
 
 This provides a simple mechanism for web-based provisioning of tokens. However, it is critical that the hyperlink be delivered *securely* to the user (e.g., via an encrypted and password-protected web page) so that the token's secret key is not revealed.
 
+Note that with an appropriate QR code scanner app you can install tokens via QR Codes.This means you can deliver the token securely on a printed page, which can then be destroyed. The app must be able to recognize the QR Code as an URL and be able to open it, instead of just copying it as plain text. One app that has been successfully tested is [http://itunes.apple.com/us/app/qrafter-qr-code-reader/id416098700?mt=8 Qrafter].
+
 == URL Format ==
 
-This URL has a simple format: *oathtoken:///addToken?*_name1_*=*_value1_*&*_name2_*=*_value2_*&*...
+This URL has a simple format: `oathtoken:///addToken?`_name1_`=`_value1_`&`_name2_`=`_value2_`&`...
 
 The token to be added is configured using URL parameters as follows:
 
 || *URL parameter* || *Required?* || *Default* || *Description* ||
-|| name || Yes || N/A || Token display name (must not be empty) ||
-|| key || Yes || N/A || Hexadecimal key (at least eight bytes long) ||
-|| timeBased || No || false || Whether to create an event-based (*false*) or time-based (*true*) token ||
-|| counter || No || 0 || Initial counter value (event-based tokens only) ||
-|| interval || No || 30 || Timer interval length in seconds (time-based tokens only) ||
-|| displayHex || No || false || Whether to display token values in hexadecimal instead of decimal ||
-|| numDigits || No || 6 || Number of digits to display (at least 4 and at most 10 (decimal) or 8 (hex)) ||
-|| lockdown || No || false || Whether to allow (*false*) or permanently disable (*true*) editing of the new token || 
+|| `name` || Yes || N/A || Token display name (must not be empty) ||
+|| `key` || Yes || N/A || Hexadecimal key (at least eight bytes long) ||
+|| `timeBased` || No || false || Whether to create an event-based (*false*) or time-based (*true*) token ||
+|| `counter` || No || 0 || Initial counter value (event-based tokens only) ||
+|| `interval` || No || 30 || Timer interval length in seconds (time-based tokens only) ||
+|| `displayHex` || No || false || Whether to display token values in hexadecimal instead of decimal ||
+|| `numDigits` || No || 6 || Number of digits to display (at least 4 and at most 10 (decimal) or 8 (hex)) ||
+|| `lockdown` || No || false || Whether to allow (*false*) or permanently disable (*true*) editing of the new token || 
 
 == Examples ==
 
-*oathtoken:///addToken?name=Web%20Token%20%231&key=0123456789abcdef555555*
+=== Example #1 ===
+
+`oathtoken:///addToken?name=Web%20Token%20%231&key=0123456789abcdef555555`
 
 Create a new event-based token named `Web Token #1' with key {{{0123456789abcdef555555}}}, initial counter value of zero, displaying six decimal digits. The user will be allowed to edit the token.
 
-*oathtoken:///addToken?name=Web%20Token%20%232&key=acbd18db4cc2f85cedef654fccc4a4d8&timeBased=true&interval=60&numDigits=10&lockdown=true*
+=== Example #2 ===
+
+`oathtoken:///addToken?name=Web%20Token%20%232&key=acbd18db4cc2f85cedef654fccc4a4d8&timeBased=true&interval=60&numDigits=10&lockdown=true`
 
 Create a new time-based token named `Web Token #2' with key {{{acbd18db4cc2f85cedef654fccc4a4d8}}}, displaying 10 decimal digits based on a 60 second interval. The user will not be allowed to edit the token.
+
+=== Example #3 ===
+
+The token in Example #1 could also be installed by scanning this QR code:
+
+http://oathtoken.googlecode.com/svn/wiki/qrcode.png
