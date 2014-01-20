@@ -43,3 +43,127 @@ Create a new time-based token named `Web Token #2' with key {{{acbd18db4cc2f85ce
 The token in Example #1 could also be installed by scanning this QR code:
 
 http://oathtoken.googlecode.com/svn/wiki/qrcode.png
+
+=== Generator Program ===
+
+Here's a little C program that generates these URLs from the command line.
+
+{{{
+/* $Id: genotpurl.c 3864 2014-01-20 17:11:13Z archie $ */
+
+#include <sys/types.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <unistd.h>
+#include <pwd.h>
+#include <err.h>
+
+static void usage(void);
+
+#define DEFAULT_NUM_DIGITS      6
+#define DEFAULT_INTERVAL        60
+#define DEFAULT_NAME            "Security Token"
+
+#define RANDOM_FILE             "/dev/urandom"
+
+int
+main(int argc, char **argv)
+{
+    const char *name = DEFAULT_NAME;
+    unsigned int interval = 60;
+    unsigned int counter = 0;
+    unsigned int num_digits = 6;
+    int time_based = 1;
+    int lock_down = 1;
+    int hex_digits = 0;
+    char kbuf[16];
+    FILE *fp;
+    int i;
+
+    // Parse command line
+    while ((i = getopt(argc, argv, "d:i:Nn:x")) != -1) {
+        switch (i) {
+        case 'd':
+            num_digits = atoi(optarg);
+            break;
+        case 'I':
+            time_based = 0;
+            break;
+        case 'i':
+            interval = atoi(optarg);
+            break;
+        case 'n':
+            name = optarg;
+            break;
+        case 'N':
+            lock_down = 0;
+            break;
+        case 'x':
+            hex_digits = 1;
+            break;
+        case '?':
+        default:
+            usage();
+            exit(1);
+        }
+    }
+    argv += optind;
+    argc -= optind;
+    switch (argc) {
+    case 0:
+        break;
+    default:
+        usage();
+        exit(1);
+    }
+
+    // Generate key
+    if ((fp = fopen(RANDOM_FILE, "r")) == NULL)
+        err(1, "%s", RANDOM_FILE);
+    if (fread(kbuf, 1, sizeof(kbuf), fp) != sizeof(kbuf))
+        err(1, "%s", RANDOM_FILE);
+    fclose(fp);
+
+    // Output URL
+    printf("oathtoken:///addToken?name=");
+    for (i = 0; name[i] != '\0'; i++) {
+        if (isalnum(name[i]))
+            printf("%c", name[i]);
+        else
+            printf("%%%02x", name[i] & 0xff);
+    }
+    printf("&key=");
+    for (i = 0; i < sizeof(kbuf); i++)
+        printf("%02x", kbuf[i] & 0xff);
+    if (time_based)
+        printf("&timeBased=true");
+    if (!time_based && counter != 0)
+        printf("&counter=%u", counter);
+    if (time_based && interval != DEFAULT_INTERVAL)
+        printf("&interval=%u", interval);
+    if (num_digits != DEFAULT_NUM_DIGITS)
+        printf("&numDigits=%u", num_digits);
+    if (hex_digits)
+        printf("&displayHex=true");
+    if (lock_down)
+        printf("&lockdown=true");
+    printf("\n");
+
+    // Done
+    return 0;
+}
+
+static void
+usage(void)
+{
+    fprintf(stderr, "Usage: genotpurl [-INx] [-n name] [-d num-digits] [-i interval]\n");
+    fprintf(stderr, "Options:\n");
+    fprintf(stderr, "  -I\tInterval-based instead of time-based\n");
+    fprintf(stderr, "  -N\tDon't lock down\n");
+    fprintf(stderr, "  -d\tNumber of digits (default %d)\n", DEFAULT_NUM_DIGITS);
+    fprintf(stderr, "  -i\tInterval in seconds (default %d)\n", DEFAULT_INTERVAL);
+    fprintf(stderr, "  -x\tHex digits insteda of decimal\n");
+}
+}}}
