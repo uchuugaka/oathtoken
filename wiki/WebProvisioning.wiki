@@ -49,8 +49,6 @@ http://oathtoken.googlecode.com/svn/wiki/qrcode.png
 Here's a little C program that generates these URLs from the command line.
 
 {{{
-/* $Id: genotpurl.c 3864 2014-01-20 17:11:13Z archie $ */
-
 #include <sys/types.h>
 
 #include <stdio.h>
