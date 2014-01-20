@@ -167,7 +167,7 @@ usage(void)
     fprintf(stderr, "  -I\tInterval-based instead of time-based\n");
     fprintf(stderr, "  -i\tTime interval in seconds (default %d)\n", DEFAULT_INTERVAL);
     fprintf(stderr, "  -N\tDon't lock down\n");
-    fprintf(stderr, "  -n\tSpecify name for token (default \"%s\"\n", DEFAULT_NAME);
+    fprintf(stderr, "  -n\tSpecify name for token (default \"%s\")\n", DEFAULT_NAME);
     fprintf(stderr, "  -x\tHex digits insteda of decimal\n");
 }
 }}}
