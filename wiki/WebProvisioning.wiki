@@ -60,6 +60,7 @@ Here's a little C program that generates these URLs from the command line.
 
 static void usage(void);
 
+#define DEFAULT_COUNTER         0
 #define DEFAULT_NUM_DIGITS      6
 #define DEFAULT_INTERVAL        60
 #define DEFAULT_NAME            "Security Token"
@@ -71,7 +72,7 @@ main(int argc, char **argv)
 {
     const char *name = DEFAULT_NAME;
     unsigned int interval = 60;
-    unsigned int counter = 0;
+    unsigned int counter = DEFAULT_COUNTER;
     unsigned int num_digits = 6;
     int time_based = 1;
     int lock_down = 1;
@@ -81,8 +82,11 @@ main(int argc, char **argv)
     int i;
 
     // Parse command line
-    while ((i = getopt(argc, argv, "d:i:Nn:x")) != -1) {
+    while ((i = getopt(argc, argv, "c:d:i:Nn:x")) != -1) {
         switch (i) {
+        case 'c':
+            counter = atoi(optarg);
+            break;
         case 'd':
             num_digits = atoi(optarg);
             break;
@@ -137,7 +141,7 @@ main(int argc, char **argv)
         printf("%02x", kbuf[i] & 0xff);
     if (time_based)
         printf("&timeBased=true");
-    if (!time_based && counter != 0)
+    if (!time_based && counter != DEFAULT_COUNTER)
         printf("&counter=%u", counter);
     if (time_based && interval != DEFAULT_INTERVAL)
         printf("&interval=%u", interval);
@@ -156,12 +160,14 @@ main(int argc, char **argv)
 static void
 usage(void)
 {
-    fprintf(stderr, "Usage: genotpurl [-INx] [-n name] [-d num-digits] [-i interval]\n");
+    fprintf(stderr, "Usage: genotpurl [-INx] [-n name] [-c counter] [-d num-digits] [-i interval]\n");
     fprintf(stderr, "Options:\n");
-    fprintf(stderr, "  -I\tInterval-based instead of time-based\n");
-    fprintf(stderr, "  -N\tDon't lock down\n");
+    fprintf(stderr, "  -c\tInitial counter value (default %d)\n", DEFAULT_COUNTER);
     fprintf(stderr, "  -d\tNumber of digits (default %d)\n", DEFAULT_NUM_DIGITS);
-    fprintf(stderr, "  -i\tInterval in seconds (default %d)\n", DEFAULT_INTERVAL);
+    fprintf(stderr, "  -I\tInterval-based instead of time-based\n");
+    fprintf(stderr, "  -i\tTime interval in seconds (default %d)\n", DEFAULT_INTERVAL);
+    fprintf(stderr, "  -N\tDon't lock down\n");
+    fprintf(stderr, "  -n\tSpecify name for token (default \"%s\"\n", DEFAULT_NAME);
     fprintf(stderr, "  -x\tHex digits insteda of decimal\n");
 }
 }}}
